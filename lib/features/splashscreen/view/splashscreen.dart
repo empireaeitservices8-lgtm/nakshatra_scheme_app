@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:PROJECT_NAME_PLACEHOLDER/features/login/view/login_screen.dart';
 import 'package:PROJECT_NAME_PLACEHOLDER/features/splashscreen/view_model/splash_view_model.dart';
 import 'package:PROJECT_NAME_PLACEHOLDER/providers/language_provider.dart';
 import 'package:PROJECT_NAME_PLACEHOLDER/providers/theme_provider.dart';
@@ -31,7 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () async {
-      //Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      }
     });
     _splashViewModel = SplashViewModel();
 

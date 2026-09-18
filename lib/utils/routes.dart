@@ -1,9 +1,13 @@
+import 'package:PROJECT_NAME_PLACEHOLDER/features/create_account/view/create_account_screen.dart';
+import 'package:PROJECT_NAME_PLACEHOLDER/features/login/view/login_screen.dart';
 import 'package:PROJECT_NAME_PLACEHOLDER/features/splashscreen/view/splashscreen.dart';
 import 'package:PROJECT_NAME_PLACEHOLDER/utils/connection_failed_screen.dart';
 import 'package:flutter/material.dart';
 
 Map<String, Widget Function(BuildContext context)> appRoutes() => {
       SplashScreen.routeName: (context) => const SplashScreen(),
+      LoginScreen.routeName: (context) => const LoginScreen(),
+      CreateAccountScreen.routeName: (context) => const CreateAccountScreen(),
     };
 
 Widget? _getScreen(RouteSettings settings) {
