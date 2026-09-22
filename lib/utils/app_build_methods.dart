@@ -54,18 +54,21 @@ double rssiTosignalStrength([double rssi = 0.0]) {
   return (signalStrength); // Output: 0.78
 }
 
-showToast(String msg,
-    {ToastGravity? gravity,
-    Color? backgroundColor,
-    Color? textColor,
-    double? fontSize}) {
+void showToast(
+  String msg, {
+  ToastGravity? gravity,
+  Color? backgroundColor,
+  Color? textColor,
+  double? fontSize,
+  Toast? toastLength,
+}) {
   Fluttertoast.showToast(
     msg: msg,
-    toastLength: Toast.LENGTH_SHORT,
-    gravity: gravity,
-    backgroundColor: backgroundColor,
-    textColor: textColor,
-    fontSize: fontSize,
+    toastLength: toastLength ?? Toast.LENGTH_SHORT,
+    gravity: gravity ?? ToastGravity.BOTTOM,
+    backgroundColor: backgroundColor ?? const Color(0xFF101826),
+    textColor: textColor ?? const Color(0xFFE5B869),
+    fontSize: fontSize ?? 13.5,
   );
 }
 

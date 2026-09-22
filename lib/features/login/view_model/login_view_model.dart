@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 
+import '../model/login_model.dart';
+import '../repo/login_repository.dart';
+
 class LoginViewModel extends ChangeNotifier {
-  final TextEditingController phoneController = TextEditingController();
+  final LoginRepository _repository;
+
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  // Alias for backwards compatibility if needed
+  TextEditingController get phoneController => usernameController;
 
   bool _isPasswordVisible = false;
   bool _isLoading = false;
   String _selectedCountryCode = '+91';
   String? _errorMessage;
+  LoginResponseModel? _loginResponse;
+
+  LoginViewModel({LoginRepository? repository})
+      : _repository = repository ?? LoginRepository();
 
   bool get isPasswordVisible => _isPasswordVisible;
   bool get isLoading => _isLoading;
   String get selectedCountryCode => _selectedCountryCode;
   String? get errorMessage => _errorMessage;
+  LoginResponseModel? get loginResponse => _loginResponse;
+  UserDataModel? get currentUser => _loginResponse?.result?.data;
 
   void togglePasswordVisibility() {
     _isPasswordVisible = !_isPasswordVisible;
@@ -32,17 +46,11 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   bool validateInputs() {
-    final phone = phoneController.text.trim();
+    final username = usernameController.text.trim();
     final password = passwordController.text;
 
-    if (phone.isEmpty) {
-      _errorMessage = "Please enter your phone number";
-      notifyListeners();
-      return false;
-    }
-
-    if (phone.length < 10) {
-      _errorMessage = "Please enter a valid 10-digit phone number";
+    if (username.isEmpty) {
+      _errorMessage = "Please enter your username or email";
       notifyListeners();
       return false;
     }
@@ -58,6 +66,7 @@ class LoginViewModel extends ChangeNotifier {
     return true;
   }
 
+  /// Performs login using the LoginRepository
   Future<bool> signIn() async {
     if (!validateInputs()) return false;
 
@@ -66,11 +75,39 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Simulate network request or call authentication service
-      await Future.delayed(const Duration(milliseconds: 1200));
-      _isLoading = false;
-      notifyListeners();
-      return true;
+      final username = usernameController.text.trim();
+      final password = passwordController.text;
+
+      final response = await _repository.login(
+        username: username,
+        password: password,
+      );
+
+      _loginResponse = response;
+
+      if (response.isSuccess) {
+        _isLoading = false;
+        _errorMessage = null;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        
+        // Extract descriptive error message from server
+        String? errorMsg = response.result?.message;
+        if (errorMsg == null && response.error != null) {
+          if (response.error?.data is Map &&
+              response.error!.data['message'] != null) {
+            errorMsg = response.error!.data['message'].toString();
+          } else {
+            errorMsg = response.error?.message;
+          }
+        }
+
+        _errorMessage = errorMsg ?? "Invalid username or password. Please try again.";
+        notifyListeners();
+        return false;
+      }
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
@@ -81,7 +118,7 @@ class LoginViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    phoneController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
     super.dispose();
   }

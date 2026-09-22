@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/nakshathra_logo.dart';
+import '../../home/view/home_screen.dart';
 import '../../login/view/login_screen.dart';
 import '../view_model/create_account_view_model.dart';
 
@@ -32,63 +33,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   void _onRegisterPressed() async {
     FocusScope.of(context).unfocus();
-    final success = await _viewModel.registerSchemeAccount();
+    final success = await _viewModel.registerAccount();
     if (!mounted) return;
 
     if (success) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          backgroundColor: const Color(0xFF131A29),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(color: Color(0xFFE5B869), width: 1.2),
-          ),
-          title: const Row(
-            children: [
-              Icon(Icons.stars_rounded, color: Color(0xFFE5B869), size: 28),
-              SizedBox(width: 10),
-              Text(
-                "Registration Successful",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'OpenSans',
-                ),
-              ),
-            ],
-          ),
-          content: Text(
-            "Welcome to Nakshathra Gold Scheme! Your account has been registered for ${_viewModel.selectedScheme.name}. You can now sign in to manage your gold portfolio.",
-            style: const TextStyle(
-              color: Color(0xFFCBD5E1),
-              fontSize: 13.5,
-              fontFamily: 'OpenSans',
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE5B869),
-                foregroundColor: const Color(0xFF0F1420),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              ),
-              child: const Text(
-                "GO TO SIGN IN",
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-          ],
-        ),
+      // Directly navigate to Home Screen upon successful registration
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        HomeScreen.routeName,
+        (route) => false,
       );
     }
   }
@@ -100,10 +52,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
           systemNavigationBarColor: const Color(0xFF070B14),
           systemNavigationBarIconBrightness: Brightness.light,
         ),
         child: Scaffold(
+          backgroundColor: const Color(0xFF080E1C),
           body: Container(
             width: double.infinity,
             height: double.infinity,
@@ -112,12 +66,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF080E1C),
-                  Color(0xFF0E1729),
-                  Color(0xFF0A101D),
-                  Color(0xFF060A13),
+                  Color(0xFF090F1D),
+                  Color(0xFF0D1627),
+                  Color(0xFF080D18),
                 ],
-                stops: [0.0, 0.35, 0.7, 1.0],
+                stops: [0.0, 0.45, 1.0],
               ),
             ),
             child: SafeArea(
@@ -130,39 +83,41 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   Expanded(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
                       child: Column(
                         children: [
+                          const SizedBox(height: 16),
+
                           // Brand Header
                           const NakshathraBrandHeader(),
 
                           const SizedBox(height: 24),
 
                           // Title & Subtitle
-                          Text(
-                            "Scheme Registration",
+                          const Text(
+                            "Create Account",
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.95),
-                              fontSize: 24,
+                              color: Colors.white,
+                              fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5,
+                              letterSpacing: 0.3,
                               fontFamily: 'OpenSans',
                             ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 6),
                           const Text(
-                            "Start your gold investment journey today",
+                            "Join Nakshathra Gold & start saving securely",
                             style: TextStyle(
-                              color: Color(0xFF909BB0),
-                              fontSize: 13,
+                              color: Color(0xFF8B9AAF),
+                              fontSize: 13.5,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'OpenSans',
                             ),
                             textAlign: TextAlign.center,
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 28),
 
                           // Main Registration Card
                           _buildRegistrationCard(context),
@@ -188,7 +143,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   Widget _buildTopBar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -203,9 +158,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             decoration: BoxDecoration(
-              color: const Color(0xFF131A29),
+              color: const Color(0xFF101826),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF222C3E)),
+              border: Border.all(color: const Color(0xFF1C273A)),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
@@ -213,7 +168,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 Icon(Icons.verified_user_outlined, color: Color(0xFFE5B869), size: 14),
                 SizedBox(width: 6),
                 Text(
-                  "100% BIS Hallmarked",
+                  "100% 24K Pure Gold",
                   style: TextStyle(
                     color: Color(0xFFE5B869),
                     fontSize: 11,
@@ -224,7 +179,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ],
             ),
           ),
-          const SizedBox(width: 48), // Balancing width for back button
+          const SizedBox(width: 48),
         ],
       ),
     );
@@ -236,15 +191,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         return Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFF131A29).withOpacity(0.92),
+            color: const Color(0xFF101826),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: const Color(0xFF222C3E),
+              color: const Color(0xFF1C273A),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.35),
+                color: Colors.black.withOpacity(0.4),
                 blurRadius: 25,
                 spreadRadius: 2,
                 offset: const Offset(0, 10),
@@ -258,7 +213,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             children: [
               // Gold Header Badge
               const Text(
-                "NEW MEMBER ENROLLMENT",
+                "BASIC REGISTRATION",
                 style: TextStyle(
                   color: Color(0xFFE5B869),
                   fontSize: 11.5,
@@ -270,29 +225,40 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
               const SizedBox(height: 20),
 
-              // Section 1: Personal Information
-              _buildSectionTitle("PERSONAL DETAILS"),
-              const SizedBox(height: 10),
-
-              // Full Name Field
-              _buildInputField(
-                controller: viewModel.nameController,
-                hintText: "Full Name (as per Aadhaar/PAN)",
-                icon: Icons.person_outline_rounded,
-                onChanged: (_) => viewModel.clearError(),
+              // 1. First Name & Last Name (Row)
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildInputField(
+                      controller: viewModel.firstNameController,
+                      hintText: "First Name",
+                      icon: Icons.person_outline_rounded,
+                      onChanged: (_) => viewModel.clearError(),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildInputField(
+                      controller: viewModel.lastNameController,
+                      hintText: "Last Name",
+                      icon: Icons.badge_outlined,
+                      onChanged: (_) => viewModel.clearError(),
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 14),
 
-              // Phone Number Field with Country Code & Flag
+              // 2. Mobile Number Field with Country Code & Flag
               Container(
                 height: 54,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A2234),
+                  color: const Color(0xFF161F30),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: const Color(0xFF28344A),
-                    width: 1.1,
+                    color: const Color(0xFF253347),
+                    width: 1.0,
                   ),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -318,7 +284,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     Container(
                       height: 22,
                       width: 1,
-                      color: const Color(0xFF2E3D56),
+                      color: const Color(0xFF2A3A52),
                       margin: const EdgeInsets.symmetric(horizontal: 12),
                     ),
                     Expanded(
@@ -337,14 +303,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         ),
                         cursorColor: const Color(0xFFE5B869),
                         decoration: const InputDecoration(
+                          filled: false,
+                          fillColor: Colors.transparent,
                           hintText: "Mobile Number",
                           hintStyle: TextStyle(
-                            color: Color(0xFF5E6E87),
+                            color: Color(0xFF556882),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'OpenSans',
                           ),
                           border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
                         ),
@@ -357,176 +330,31 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
               const SizedBox(height: 14),
 
-              // Email Field (Optional)
+              // 3. Email Field
               _buildInputField(
                 controller: viewModel.emailController,
-                hintText: "Email Address (Optional)",
-                icon: Icons.email_outlined,
+                hintText: "Email Address",
+                icon: Icons.mail_outline_rounded,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (_) => viewModel.clearError(),
               ),
 
-              const SizedBox(height: 22),
+              const SizedBox(height: 14),
 
-              // Section 2: Scheme Plan Selection
-              _buildSectionTitle("SELECT GOLD SCHEME"),
-              const SizedBox(height: 10),
-
-              // Scheme Dropdown Container
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A2234),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: const Color(0xFF28344A),
-                    width: 1.1,
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<SchemeOption>(
-                    value: viewModel.selectedScheme,
-                    isExpanded: true,
-                    dropdownColor: const Color(0xFF1A2234),
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: Color(0xFFE5B869),
-                    ),
-                    items: viewModel.availableSchemes.map((scheme) {
-                      return DropdownMenuItem<SchemeOption>(
-                        value: scheme,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.monetization_on_outlined,
-                              color: Color(0xFFE5B869),
-                              size: 18,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "${scheme.name} (${scheme.duration})",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'OpenSans',
-                                    ),
-                                  ),
-                                  Text(
-                                    scheme.description,
-                                    style: const TextStyle(
-                                      color: Color(0xFF8896AB),
-                                      fontSize: 11,
-                                      fontFamily: 'OpenSans',
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (scheme) {
-                      if (scheme != null) {
-                        viewModel.selectScheme(scheme);
-                      }
-                    },
-                  ),
-                ),
+              // 4. City Field
+              _buildInputField(
+                controller: viewModel.cityController,
+                hintText: "City (e.g. Calicut)",
+                icon: Icons.location_city_outlined,
+                onChanged: (_) => viewModel.clearError(),
               ),
 
               const SizedBox(height: 14),
 
-              // Monthly Installment Amount Label
-              const Text(
-                "Monthly Installment Amount (₹)",
-                style: TextStyle(
-                  color: Color(0xFFCBD5E1),
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                ),
-              ),
-              const SizedBox(height: 8),
-
-              // Quick Amount Preset Chips
-              Row(
-                children: List.generate(viewModel.presetAmounts.length, (index) {
-                  final amount = viewModel.presetAmounts[index];
-                  final isSelected = viewModel.selectedAmountIndex == index;
-                  return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        right: index < viewModel.presetAmounts.length - 1 ? 6 : 0,
-                      ),
-                      child: GestureDetector(
-                        onTap: () => viewModel.selectPresetAmount(index),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? const Color(0xFFE5B869)
-                                : const Color(0xFF1A2234),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: isSelected
-                                  ? const Color(0xFFE5B869)
-                                  : const Color(0xFF28344A),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "₹$amount",
-                              style: TextStyle(
-                                color: isSelected
-                                    ? const Color(0xFF0F1420)
-                                    : Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'OpenSans',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-
-              const SizedBox(height: 10),
-
-              // Custom Amount Input
-              _buildInputField(
-                controller: viewModel.amountController,
-                hintText: "Enter installment amount (Min ₹500)",
-                icon: Icons.currency_rupee_rounded,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                onChanged: (_) {
-                  viewModel.clearError();
-                },
-              ),
-
-              const SizedBox(height: 22),
-
-              // Section 3: Security & Password
-              _buildSectionTitle("SECURITY"),
-              const SizedBox(height: 10),
-
-              // Password Field
+              // 5. Password Field
               _buildPasswordField(
                 controller: viewModel.passwordController,
-                hintText: "Create Password (min 6 chars)",
+                hintText: "Password (min 6 chars)",
                 isVisible: viewModel.isPasswordVisible,
                 onToggleVisibility: viewModel.togglePasswordVisibility,
                 onChanged: (_) => viewModel.clearError(),
@@ -534,25 +362,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
               const SizedBox(height: 14),
 
-              // Confirm Password Field
+              // 6. Confirm Password Field
               _buildPasswordField(
                 controller: viewModel.confirmPasswordController,
                 hintText: "Confirm Password",
                 isVisible: viewModel.isConfirmPasswordVisible,
                 onToggleVisibility: viewModel.toggleConfirmPasswordVisibility,
-                onChanged: (_) => viewModel.clearError(),
-              ),
-
-              const SizedBox(height: 22),
-
-              // Section 4: Nominee Details (Optional)
-              _buildSectionTitle("NOMINEE DETAILS (OPTIONAL)"),
-              const SizedBox(height: 10),
-
-              _buildInputField(
-                controller: viewModel.nomineeNameController,
-                hintText: "Nominee Name",
-                icon: Icons.family_restroom_rounded,
                 onChanged: (_) => viewModel.clearError(),
               ),
 
@@ -581,10 +396,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     child: GestureDetector(
                       onTap: () => viewModel.toggleTermsAgreement(!viewModel.agreedToTerms),
                       child: const Text(
-                        "I agree to Nakshathra Gold Savings Scheme Terms & Conditions and declare that all details provided are accurate.",
+                        "I agree to Nakshathra Gold Terms & Conditions and Privacy Policy.",
                         style: TextStyle(
-                          color: Color(0xFF94A3B8),
-                          fontSize: 11.5,
+                          color: Color(0xFF8E9DAE),
+                          fontSize: 12,
                           height: 1.4,
                           fontFamily: 'OpenSans',
                         ),
@@ -631,19 +446,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        color: Color(0xFFCBD5E1),
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1.2,
-        fontFamily: 'OpenSans',
-      ),
-    );
-  }
-
   Widget _buildInputField({
     required TextEditingController controller,
     required String hintText,
@@ -655,17 +457,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return Container(
       height: 54,
       decoration: BoxDecoration(
-        color: const Color(0xFF1A2234),
+        color: const Color(0xFF161F30),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: const Color(0xFF28344A),
-          width: 1.1,
+          color: const Color(0xFF253347),
+          width: 1.0,
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFF8896AB), size: 20),
+          Icon(icon, color: const Color(0xFF7A8B9E), size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: TextField(
@@ -680,14 +482,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               cursorColor: const Color(0xFFE5B869),
               decoration: InputDecoration(
+                filled: false,
+                fillColor: Colors.transparent,
                 hintText: hintText,
                 hintStyle: const TextStyle(
-                  color: Color(0xFF5E6E87),
+                  color: Color(0xFF556882),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   fontFamily: 'OpenSans',
                 ),
                 border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
               ),
@@ -709,11 +518,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return Container(
       height: 54,
       decoration: BoxDecoration(
-        color: const Color(0xFF1A2234),
+        color: const Color(0xFF161F30),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: const Color(0xFF28344A),
-          width: 1.1,
+          color: const Color(0xFF253347),
+          width: 1.0,
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -721,7 +530,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         children: [
           const Icon(
             Icons.lock_outline_rounded,
-            color: Color(0xFF8896AB),
+            color: Color(0xFF7A8B9E),
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -737,14 +546,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               cursorColor: const Color(0xFFE5B869),
               decoration: InputDecoration(
+                filled: false,
+                fillColor: Colors.transparent,
                 hintText: hintText,
                 hintStyle: const TextStyle(
-                  color: Color(0xFF5E6E87),
+                  color: Color(0xFF556882),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   fontFamily: 'OpenSans',
                 ),
                 border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
               ),
@@ -758,7 +574,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               padding: const EdgeInsets.all(4.0),
               child: Icon(
                 isVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                color: const Color(0xFF8896AB),
+                color: const Color(0xFF7A8B9E),
                 size: 20,
               ),
             ),
@@ -819,7 +635,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         boxShadow: [
           BoxShadow(
             color: const Color(0xFFD4A346).withOpacity(0.35),
-            blurRadius: 16,
+            blurRadius: 18,
             spreadRadius: 1,
             offset: const Offset(0, 4),
           ),
@@ -843,7 +659,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                   )
                 : const Text(
-                    "CREATE SCHEME ACCOUNT",
+                    "CREATE ACCOUNT",
                     style: TextStyle(
                       color: Color(0xFF111724),
                       fontSize: 14,
@@ -859,34 +675,32 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   }
 
   Widget _buildBottomSignInLink(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "Already enrolled in a scheme? ",
-          style: TextStyle(
-            color: Color(0xFF94A3B8),
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'OpenSans',
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Already have an account? ",
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.7),
+              fontSize: 13.5,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'OpenSans',
+            ),
           ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-          },
-          behavior: HitTestBehavior.opaque,
-          child: const Text(
+          const Text(
             "Sign In",
             style: TextStyle(
               color: Color(0xFFE5B869),
-              fontSize: 13,
+              fontSize: 13.5,
               fontWeight: FontWeight.w700,
               fontFamily: 'OpenSans',
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

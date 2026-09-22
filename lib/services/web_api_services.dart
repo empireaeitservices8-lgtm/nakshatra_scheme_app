@@ -7,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '_mixins_api.dart';
 
+import '../utils/api_logger.dart';
+
 class WebAPIService with WebAPIMixin, MixinAPIProvider {
   WebAPIService._initialise()
       : _dio = Dio(BaseOptions(
@@ -14,15 +16,7 @@ class WebAPIService with WebAPIMixin, MixinAPIProvider {
             headers: {
               "accept": "application/json",
             })) {
-    if (kDebugMode) {
-      dio.interceptors.add(LogInterceptor(
-        responseHeader: false,
-        responseBody: true,
-        requestBody: true,
-        requestHeader: true,
-      ));
-      // ..interceptors.add(AppStackInterceptorBuilder.appStackInterceptor);
-    }
+    dio.interceptors.add(ApiLoggingInterceptor());
   }
 
   factory WebAPIService() => WebAPIService._initialise();

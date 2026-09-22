@@ -40,7 +40,7 @@ dependencies:
   provider: ^6.1.1
   dio: ^5.4.0
   shared_preferences: ^2.2.2
-  intl: ^0.20.2
+  intl: ^0.19.0
   flutter_svg: ^2.0.9
   json_serializable: ^6.7.1
   json_annotation: ^4.8.1

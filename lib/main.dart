@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'features/splashscreen/view/splashscreen.dart';
+import 'providers/bottom_nav_provider.dart';
 import 'providers/language_provider.dart';
 import 'providers/theme_provider.dart';
 import 'utils/interceptors.dart';
@@ -19,7 +20,8 @@ import 'utils/localization.dart';
 import 'utils/routes.dart';
 import 'utils/themes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -38,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => LanguageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BottomNavProvider(),
         ),
       ],
       builder: (context, child) => ScreenUtilInit(
@@ -82,11 +87,6 @@ class MyApp extends StatelessWidget {
               builder: (context, child) {
                 LanguageProvider.initContext(context);
                 Localization.init(context);
-
-                if (kDebugMode) {
-                  StackTrace.current.toString().log('', true);
-                  child = AppStackInterceptorBuilder(child: child!);
-                }
                 return child!;
               },
             );

@@ -1,53 +1,21 @@
 import 'package:flutter/material.dart';
 
-class SchemeOption {
-  final String id;
-  final String name;
-  final String duration;
-  final String description;
-
-  const SchemeOption({
-    required this.id,
-    required this.name,
-    required this.duration,
-    required this.description,
-  });
-}
+import '../model/register_model.dart';
+import '../repo/register_repository.dart';
 
 class CreateAccountViewModel extends ChangeNotifier {
-  final TextEditingController nameController = TextEditingController();
+  final RegisterRepository _repository;
+
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController amountController = TextEditingController(text: "2000");
+  final TextEditingController cityController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-  final TextEditingController nomineeNameController = TextEditingController();
-  final TextEditingController nomineeRelationController = TextEditingController();
 
-  final List<SchemeOption> availableSchemes = const [
-    SchemeOption(
-      id: 'swarna_varsha_11',
-      name: 'Swarna Varsha',
-      duration: '11 Months',
-      description: 'Pay 11 monthly installments & get exciting gold bonus benefits',
-    ),
-    SchemeOption(
-      id: 'nakshathra_flexi_gold',
-      name: 'Nakshathra Flexi Gold',
-      duration: 'Flexible',
-      description: 'Accumulate gold weight at live gold rates anytime',
-    ),
-    SchemeOption(
-      id: 'swarna_nidhi_daily',
-      name: 'Swarna Nidhi Daily',
-      duration: '300 Days',
-      description: 'Save small amounts daily and redeem for gold jewellery',
-    ),
-  ];
-
-  late SchemeOption _selectedScheme;
-  int _selectedAmountIndex = 1; // Default to ₹2,000
-  final List<int> presetAmounts = [1000, 2000, 5000, 10000];
+  // Backwards compatibility alias for full name if needed
+  TextEditingController get nameController => firstNameController;
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -55,33 +23,20 @@ class CreateAccountViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String _selectedCountryCode = '+91';
   String? _errorMessage;
+  RegisterResponseModel? _registerResponse;
 
-  CreateAccountViewModel() {
-    _selectedScheme = availableSchemes.first;
-  }
+  CreateAccountViewModel({RegisterRepository? repository})
+      : _repository = repository ?? RegisterRepository();
 
   // Getters
-  SchemeOption get selectedScheme => _selectedScheme;
-  int get selectedAmountIndex => _selectedAmountIndex;
   bool get isPasswordVisible => _isPasswordVisible;
   bool get isConfirmPasswordVisible => _isConfirmPasswordVisible;
   bool get agreedToTerms => _agreedToTerms;
   bool get isLoading => _isLoading;
   String get selectedCountryCode => _selectedCountryCode;
   String? get errorMessage => _errorMessage;
-
-  void selectScheme(SchemeOption scheme) {
-    _selectedScheme = scheme;
-    notifyListeners();
-  }
-
-  void selectPresetAmount(int index) {
-    _selectedAmountIndex = index;
-    if (index >= 0 && index < presetAmounts.length) {
-      amountController.text = presetAmounts[index].toString();
-    }
-    notifyListeners();
-  }
+  RegisterResponseModel? get registerResponse => _registerResponse;
+  RegisterUserDataModel? get registeredUser => _registerResponse?.result?.data;
 
   void togglePasswordVisibility() {
     _isPasswordVisible = !_isPasswordVisible;
@@ -111,14 +66,22 @@ class CreateAccountViewModel extends ChangeNotifier {
   }
 
   bool validateForm() {
-    final name = nameController.text.trim();
+    final firstName = firstNameController.text.trim();
+    final lastName = lastNameController.text.trim();
     final phone = phoneController.text.trim();
-    final amount = amountController.text.trim();
+    final email = emailController.text.trim();
+    final city = cityController.text.trim();
     final password = passwordController.text;
     final confirmPassword = confirmPasswordController.text;
 
-    if (name.isEmpty) {
-      _errorMessage = "Please enter your full name";
+    if (firstName.isEmpty) {
+      _errorMessage = "Please enter your first name";
+      notifyListeners();
+      return false;
+    }
+
+    if (lastName.isEmpty) {
+      _errorMessage = "Please enter your last name";
       notifyListeners();
       return false;
     }
@@ -129,8 +92,14 @@ class CreateAccountViewModel extends ChangeNotifier {
       return false;
     }
 
-    if (amount.isEmpty || (int.tryParse(amount) ?? 0) < 500) {
-      _errorMessage = "Minimum monthly installment amount is ₹500";
+    if (email.isEmpty || !email.contains('@') || !email.contains('.')) {
+      _errorMessage = "Please enter a valid email address";
+      notifyListeners();
+      return false;
+    }
+
+    if (city.isEmpty) {
+      _errorMessage = "Please enter your city";
       notifyListeners();
       return false;
     }
@@ -148,7 +117,7 @@ class CreateAccountViewModel extends ChangeNotifier {
     }
 
     if (!_agreedToTerms) {
-      _errorMessage = "Please accept the Scheme Terms & Conditions to proceed";
+      _errorMessage = "Please agree to the Terms & Conditions to proceed";
       notifyListeners();
       return false;
     }
@@ -158,7 +127,8 @@ class CreateAccountViewModel extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> registerSchemeAccount() async {
+  /// Executes user registration via RegisterRepository
+  Future<bool> registerAccount() async {
     if (!validateForm()) return false;
 
     _isLoading = true;
@@ -166,11 +136,52 @@ class CreateAccountViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Simulate API call for scheme enrollment & account registration
-      await Future.delayed(const Duration(milliseconds: 1500));
-      _isLoading = false;
-      notifyListeners();
-      return true;
+      final firstName = firstNameController.text.trim();
+      final lastName = lastNameController.text.trim();
+      final fullName = "$firstName $lastName".trim();
+      final phone = phoneController.text.trim();
+      final email = emailController.text.trim();
+      final city = cityController.text.trim();
+      final password = passwordController.text;
+      final confirmPassword = confirmPasswordController.text;
+
+      final params = RegisterRequestParams(
+        name: fullName,
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        city: city,
+      );
+
+      final response = await _repository.register(params);
+      _registerResponse = response;
+
+      if (response.isSuccess) {
+        _isLoading = false;
+        _errorMessage = null;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        
+        // Extract descriptive error message from server
+        String? errorMsg = response.result?.message;
+        if (errorMsg == null && response.error != null) {
+          if (response.error?.data is Map &&
+              response.error!.data['message'] != null) {
+            errorMsg = response.error!.data['message'].toString();
+          } else {
+            errorMsg = response.error?.message;
+          }
+        }
+
+        _errorMessage = errorMsg ?? "Registration failed. Please try again.";
+        notifyListeners();
+        return false;
+      }
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
@@ -181,14 +192,13 @@ class CreateAccountViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    nameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     phoneController.dispose();
     emailController.dispose();
-    amountController.dispose();
+    cityController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
-    nomineeNameController.dispose();
-    nomineeRelationController.dispose();
     super.dispose();
   }
 }
