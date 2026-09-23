@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/app_build_methods.dart';
 import '../../../widgets/nakshathra_logo.dart';
 import '../../create_account/view/create_account_screen.dart';
+import '../../home/view/home_screen.dart';
+import '../../profile/view/reset_password_screen.dart';
 import '../view_model/login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -36,19 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
-            children: [
-              Icon(Icons.check_circle_outline, color: Colors.white),
-              SizedBox(width: 10),
-              Text('Signed in successfully!'),
-            ],
-          ),
-          backgroundColor: const Color(0xFF1B8755),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        HomeScreen.routeName,
+        (route) => false,
       );
     }
   }
@@ -60,10 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
           systemNavigationBarColor: const Color(0xFF070B14),
           systemNavigationBarIconBrightness: Brightness.light,
         ),
         child: Scaffold(
+          backgroundColor: const Color(0xFF080E1C),
           body: Container(
             width: double.infinity,
             height: double.infinity,
@@ -72,12 +67,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF080E1C),
-                  Color(0xFF0E1729),
-                  Color(0xFF0A101D),
-                  Color(0xFF060A13),
+                  Color(0xFF090F1D),
+                  Color(0xFF0D1627),
+                  Color(0xFF080D18),
                 ],
-                stops: [0.0, 0.35, 0.7, 1.0],
+                stops: [0.0, 0.45, 1.0],
               ),
             ),
             child: SafeArea(
@@ -85,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context, constraints) {
                   return SingleChildScrollView(
                     physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minHeight: constraints.maxHeight,
@@ -93,30 +87,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: IntrinsicHeight(
                         child: Column(
                           children: [
-                            const SizedBox(height: 36),
-
-                            // Top Brand Logo & Header
-                            const NakshathraBrandHeader(),
-
                             const SizedBox(height: 32),
 
+                            // Top Brand Logo & Header
+                            const NakshathraBrandHeader(width: 190),
+
+                            const SizedBox(height: 24),
+
                             // Title & Subtitle
-                            Text(
-                              "Nakshathra Gold",
+                            const Text(
+                              "Welcome Back",
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.95),
-                                fontSize: 26,
+                                color: Colors.white,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w700,
-                                letterSpacing: 0.5,
+                                letterSpacing: 0.3,
                                 fontFamily: 'OpenSans',
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 6),
                             const Text(
                               "Access your gold portfolio securely",
                               style: TextStyle(
-                                color: Color(0xFF909BB0),
+                                color: Color(0xFF8B9AAF),
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'OpenSans',
@@ -155,15 +149,15 @@ class _LoginScreenState extends State<LoginScreen> {
         return Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFF131A29).withOpacity(0.92),
+            color: const Color(0xFF101826),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: const Color(0xFF222C3E),
+              color: const Color(0xFF1C273A),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.35),
+                color: Colors.black.withOpacity(0.4),
                 blurRadius: 25,
                 spreadRadius: 2,
                 offset: const Offset(0, 10),
@@ -175,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // SECURE LOGIN header badge text
+              // SECURE LOGIN header text
               const Text(
                 "SECURE LOGIN",
                 style: TextStyle(
@@ -189,60 +183,33 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
-              // Phone Number Input Container
+              // Username / Email Input Container
               Container(
                 height: 54,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A2234),
+                  color: const Color(0xFF161F30),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: const Color(0xFF28344A),
-                    width: 1.1,
+                    color: const Color(0xFF253347),
+                    width: 1.0,
                   ),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Row(
                   children: [
-                    // Indian Flag Badge
-                    _buildFlagBadge(),
-                    const SizedBox(width: 8),
-
-                    // Country Code
-                    Text(
-                      viewModel.selectedCountryCode,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.5,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'OpenSans',
-                      ),
-                    ),
-                    const SizedBox(width: 2),
-
-                    // Chevron Down Icon
+                    // User / Account Icon
                     const Icon(
-                      Icons.arrow_drop_down,
-                      color: Color(0xFF8896AB),
+                      Icons.person_outline_rounded,
+                      color: Color(0xFF7A8B9E),
                       size: 20,
                     ),
+                    const SizedBox(width: 12),
 
-                    // Divider Line
-                    Container(
-                      height: 22,
-                      width: 1,
-                      color: const Color(0xFF2E3D56),
-                      margin: const EdgeInsets.symmetric(horizontal: 12),
-                    ),
-
-                    // Phone Number TextField
+                    // Username / Email TextField
                     Expanded(
                       child: TextField(
-                        controller: viewModel.phoneController,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
-                        ],
+                        controller: viewModel.usernameController,
+                        keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14.5,
@@ -251,14 +218,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         cursorColor: const Color(0xFFE5B869),
                         decoration: const InputDecoration(
-                          hintText: "Phone Number",
+                          filled: false,
+                          fillColor: Colors.transparent,
+                          hintText: "Username or Email",
                           hintStyle: TextStyle(
-                            color: Color(0xFF5E6E87),
+                            color: Color(0xFF556882),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'OpenSans',
                           ),
                           border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
                         ),
@@ -275,11 +249,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 height: 54,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A2234),
+                  color: const Color(0xFF161F30),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: const Color(0xFF28344A),
-                    width: 1.1,
+                    color: const Color(0xFF253347),
+                    width: 1.0,
                   ),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -288,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Lock Icon
                     const Icon(
                       Icons.lock_outline_rounded,
-                      color: Color(0xFF8896AB),
+                      color: Color(0xFF7A8B9E),
                       size: 20,
                     ),
                     const SizedBox(width: 12),
@@ -306,14 +280,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         cursorColor: const Color(0xFFE5B869),
                         decoration: const InputDecoration(
+                          filled: false,
+                          fillColor: Colors.transparent,
                           hintText: "Password",
                           hintStyle: TextStyle(
-                            color: Color(0xFF5E6E87),
+                            color: Color(0xFF556882),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'OpenSans',
                           ),
                           border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
                         ),
@@ -332,7 +313,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           viewModel.isPasswordVisible
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
-                          color: const Color(0xFF8896AB),
+                          color: const Color(0xFF7A8B9E),
                           size: 20,
                         ),
                       ),
@@ -432,7 +413,7 @@ class _LoginScreenState extends State<LoginScreen> {
         boxShadow: [
           BoxShadow(
             color: const Color(0xFFD4A346).withOpacity(0.35),
-            blurRadius: 16,
+            blurRadius: 18,
             spreadRadius: 1,
             offset: const Offset(0, 4),
           ),
@@ -480,12 +461,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // Forgot Password?
           GestureDetector(
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Forgot Password tapped"),
-                  duration: Duration(seconds: 1),
-                ),
-              );
+              Navigator.of(context).pushNamed(ResetPasswordScreen.routeName);
             },
             behavior: HitTestBehavior.opaque,
             child: const Text(

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:PROJECT_NAME_PLACEHOLDER/models/app_error_model.dart';
+import 'package:nakshathra_scheme_app/models/app_error_model.dart';
 
 import '/utils/extensions.dart';
 import 'package:flutter/material.dart';

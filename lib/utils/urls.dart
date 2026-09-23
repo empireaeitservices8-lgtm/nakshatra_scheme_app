@@ -1,6 +1,21 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/helpers/url_helpers.dart';
+import 'package:nakshathra_scheme_app/helpers/url_helpers.dart';
 
 String urlBase = UrlHelpers.baseURL;
+
+// Scheme Auth
+String urlSchemeLogin = "${urlBase}api/scheme/login";
+String urlSchemeRegister = "${urlBase}api/scheme/register";
+String urlSchemeLogout = "${urlBase}api/scheme/logout";
+String urlSchemeLiveGoldPrice = "${urlBase}api/scheme/live-gold-price";
+String urlSchemePopularPlans = "${urlBase}api/scheme/popular-plans";
+String urlSchemeGoldAccount = "${urlBase}api/scheme/gold-account";
+String urlSchemeMySchemes = "${urlBase}api/scheme/my-schemes";
+String urlSchemeDetails = "${urlBase}api/scheme/details";
+String urlSchemeJoin = "${urlBase}api/scheme/join";
+String urlSchemeSupportFaq = "${urlBase}api/scheme/support-faq";
+String urlSchemeTransactionReceipts =
+    "${urlBase}api/scheme/transaction-receipts";
+String urlSchemeResetPassword = "${urlBase}api/scheme/reset-password";
 
 //Register
 String urlRegistrationRequestOTP = "${urlBase}register/request-otp";

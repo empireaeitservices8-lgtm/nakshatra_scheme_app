@@ -1,4 +1,4 @@
-package $BUNDLE_ID
+package com.nakshthra.schemeapp
 
 import io.flutter.embedding.android.FlutterActivity
 

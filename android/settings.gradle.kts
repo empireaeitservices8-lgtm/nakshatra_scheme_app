@@ -11,6 +11,8 @@ pluginManagement {
 
     repositories {
         google()
+        maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+        maven { url = uri("https://repo1.maven.org/maven2/") }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -19,7 +21,7 @@ pluginManagement {
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
     id("com.android.application") version "8.7.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
 }
 
 include(":app")
