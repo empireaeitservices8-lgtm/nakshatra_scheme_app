@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../utils/app_build_methods.dart';
+import '../../../utils/url_launcher_helper.dart';
 import '../model/support_faq_model.dart';
 import '../repo/profile_repository.dart';
 
@@ -46,7 +47,7 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
         });
       } else {
         setState(() {
-          _errorMessage = response.error?.message ?? "Failed to load support FAQ.";
+          _errorMessage = response.error?.message ?? "Failed to load support & FAQ.";
           _isLoading = false;
         });
       }
@@ -166,11 +167,15 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
       );
     }
 
+    final title = _supportFaq?.title ?? "Customer Support & FAQ";
     final subtitle = _supportFaq?.subtitle ??
         "Need help with your gold scheme account? Reach our executives instantly.";
     final hotline = _supportFaq?.supportHotline;
     final helpdesk = _supportFaq?.supportHelpdesk;
     final faqs = _supportFaq?.faqs ?? [];
+
+    final hotlinePhone = hotline?.phoneNumber ?? "+971 4 123 4567";
+    final helpdeskEmail = helpdesk?.emailAddress ?? "support@nakshathragold.com";
 
     return RefreshIndicator(
       color: const Color(0xFFE5B869),
@@ -179,160 +184,89 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
         physics: const AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. Top Banner / Subtitle Card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0D1627),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF0D1627).withOpacity(0.2),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE5B869).withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: const Color(0xFFE5B869).withOpacity(0.4),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.headset_mic_rounded,
-                        color: Color(0xFFE5B869),
-                        size: 26,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "24/7 Gold Scheme Helpdesk",
-                          style: TextStyle(
-                            color: Color(0xFFE5B869),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            fontFamily: 'OpenSans',
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: const TextStyle(
-                            color: Color(0xFF8E9DB5),
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w500,
-                            height: 1.3,
-                            fontFamily: 'OpenSans',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            // Title & Subtitle Header
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFF0D1627),
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.3,
+                fontFamily: 'OpenSans',
               ),
             ),
-
-            const SizedBox(height: 24),
-
-            // 2. Direct Channels Header
-            const Text(
-              "Direct Contact Channels",
-              style: TextStyle(
-                color: Color(0xFF0D1627),
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
+            const SizedBox(height: 6),
+            Text(
+              subtitle,
+              style: const TextStyle(
+                color: Color(0xFF8E9DB5),
+                fontSize: 13.5,
+                fontWeight: FontWeight.w500,
+                height: 1.4,
                 fontFamily: 'OpenSans',
               ),
             ),
 
-            const SizedBox(height: 14),
+            const SizedBox(height: 20),
 
-            // Phone Hotline Card
-            _buildContactChannelCard(
-              icon: Icons.phone_in_talk_rounded,
-              iconColor: const Color(0xFF22C55E),
-              iconBgColor: const Color(0xFFE8F8F0),
-              title: hotline?.title ?? "Call Support Hotline",
-              value: hotline?.displayText ?? hotline?.phoneNumber ?? "+971 4 123 4567",
-              timing: hotline?.timing ?? "9 AM - 9 PM",
-              actionLabel: "CALL NOW",
-              onTap: () {
-                showToast("Dialing hotline: ${hotline?.phoneNumber ?? '+971 4 123 4567'}");
-              },
-            ),
-
-            const SizedBox(height: 12),
-
-            // Email Helpdesk Card
-            _buildContactChannelCard(
-              icon: Icons.mark_email_read_rounded,
-              iconColor: const Color(0xFF38BDF8),
-              iconBgColor: const Color(0xFFE0F2FE),
-              title: helpdesk?.title ?? "Email Support Helpdesk",
-              value: helpdesk?.displayText ?? helpdesk?.emailAddress ?? "support@nakshathragold.com",
-              timing: "Replies within 2 hours",
-              actionLabel: "EMAIL",
-              onTap: () {
-                showToast("Opening email to: ${helpdesk?.emailAddress ?? 'support@nakshathragold.com'}");
-              },
-            ),
-
-            const SizedBox(height: 28),
-
-            // 3. Frequently Asked Questions Header
+            // Two Contact Action Cards (Side-by-side as shown in design)
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Frequently Asked Questions",
-                  style: TextStyle(
-                    color: Color(0xFF0D1627),
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    fontFamily: 'OpenSans',
+                // 1. Phone Hotline Card
+                Expanded(
+                  child: _buildContactChannelCard(
+                    icon: Icons.phone_in_talk_rounded,
+                    iconColor: const Color(0xFF22C55E),
+                    iconBgColor: const Color(0xFFE8F8F0),
+                    title: hotline?.title ?? "Call Support Hotline",
+                    value: hotline?.displayText ?? "$hotlinePhone (9 AM - 9 PM)",
+                    timing: hotline?.timing ?? "9 AM - 9 PM",
+                    onTap: () {
+                      UrlLauncherHelper.launchPhoneCaller(hotlinePhone);
+                    },
                   ),
                 ),
-                Text(
-                  "${faqs.length} FAQs",
-                  style: const TextStyle(
-                    color: Color(0xFF8E9DB5),
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'OpenSans',
+
+                const SizedBox(width: 14),
+
+                // 2. Email Helpdesk Card
+                Expanded(
+                  child: _buildContactChannelCard(
+                    icon: Icons.mark_email_read_rounded,
+                    iconColor: const Color(0xFF38BDF8),
+                    iconBgColor: const Color(0xFFE0F2FE),
+                    title: helpdesk?.title ?? "Email Support Helpdesk",
+                    value: helpdesk?.displayText ?? helpdeskEmail,
+                    timing: null,
+                    onTap: () {
+                      UrlLauncherHelper.launchEmailClient(
+                        helpdeskEmail,
+                        subject: "Support Request - Nakshathra Gold Scheme",
+                      );
+                    },
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 14),
+            const SizedBox(height: 24),
 
-            // FAQ Accordion List
-            if (faqs.isNotEmpty)
-              ...faqs.map((faq) => _buildFaqTile(faq))
-            else
+            // FAQs List Section
+            if (faqs.isNotEmpty) ...[
+              ...faqs.map((faq) => _buildFaqTile(faq)),
+            ] else
               Container(
-                padding: const EdgeInsets.all(20),
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE2E8F0)),
                 ),
                 child: const Center(
                   child: Text(
@@ -347,7 +281,7 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
                 ),
               ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -361,113 +295,103 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
     required String title,
     required String value,
     String? timing,
-    required String actionLabel,
     required VoidCallback onTap,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFFE2E8F0),
-          width: 1.0,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF0F172A).withOpacity(0.03),
-            blurRadius: 12,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: iconBgColor,
-              borderRadius: BorderRadius.circular(14),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          constraints: const BoxConstraints(minHeight: 160),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: const Color(0xFFE2E8F0),
+              width: 1.0,
             ),
-            child: Center(
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 22,
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0F172A).withOpacity(0.03),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
               ),
-            ),
+            ],
           ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Color(0xFF0D1627),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'OpenSans',
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    color: Color(0xFF64748B),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'OpenSans',
-                  ),
-                ),
-                if (timing != null) ...[
-                  const SizedBox(height: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                    width: 42,
+                    height: 42,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1F5F9),
-                      borderRadius: BorderRadius.circular(5),
+                      color: iconBgColor,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
-                      timing,
-                      style: const TextStyle(
-                        color: Color(0xFF475569),
-                        fontSize: 10.5,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'OpenSans',
+                    child: Center(
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                        size: 20,
                       ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Color(0xFF0D1627),
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'OpenSans',
+                      height: 1.25,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      color: Color(0xFF64748B),
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'OpenSans',
+                      height: 1.3,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
+              ),
+              if (timing != null) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    timing,
+                    style: const TextStyle(
+                      color: Color(0xFF475569),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'OpenSans',
+                    ),
+                  ),
+                ),
               ],
-            ),
+            ],
           ),
-          const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: onTap,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0D1627),
-              foregroundColor: const Color(0xFFE5B869),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              elevation: 0,
-            ),
-            child: Text(
-              actionLabel,
-              style: const TextStyle(
-                fontSize: 11.5,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 0.5,
-                fontFamily: 'OpenSans',
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -510,19 +434,19 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 24,
-                        height: 24,
+                        width: 26,
+                        height: 26,
                         margin: const EdgeInsets.only(top: 1),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFEF3C7),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(7),
                         ),
                         child: const Center(
                           child: Text(
                             "Q",
                             style: TextStyle(
                               color: Color(0xFFD97706),
-                              fontSize: 12,
+                              fontSize: 13,
                               fontWeight: FontWeight.w800,
                               fontFamily: 'OpenSans',
                             ),
@@ -538,6 +462,7 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
                             fontSize: 14.5,
                             fontWeight: FontWeight.w700,
                             fontFamily: 'OpenSans',
+                            height: 1.3,
                           ),
                         ),
                       ),
@@ -556,7 +481,8 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
                   if (isExpanded && (faq.answer?.isNotEmpty ?? false)) ...[
                     const SizedBox(height: 12),
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: const Color(0xFFF8FAFC),
                         borderRadius: BorderRadius.circular(10),
@@ -571,7 +497,7 @@ class _SupportFaqScreenState extends State<SupportFaqScreen> {
                           color: Color(0xFF475569),
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
-                          height: 1.4,
+                          height: 1.45,
                           fontFamily: 'OpenSans',
                         ),
                       ),
