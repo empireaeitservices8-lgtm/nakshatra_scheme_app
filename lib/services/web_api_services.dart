@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:PROJECT_NAME_PLACEHOLDER/models/app_error_model.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/providers/_mixins.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/extensions.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nakshathra_scheme_app/models/app_error_model.dart';
+import 'package:nakshathra_scheme_app/providers/_mixins.dart';
+import 'package:nakshathra_scheme_app/utils/extensions.dart';
 import '_mixins_api.dart';
 
 import '../utils/api_logger.dart';

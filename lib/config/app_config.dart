@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/enums.dart';
 
 import '../features/main/view/main_screen.dart';
+import '../utils/enums.dart';
 
 class AppConfig {
   static const appName = "Nakshathra Gold";

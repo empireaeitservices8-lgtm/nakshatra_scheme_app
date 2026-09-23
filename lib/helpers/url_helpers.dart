@@ -1,5 +1,5 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/config/app_config.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/enums.dart';
+import 'package:nakshathra_scheme_app/config/app_config.dart';
+import 'package:nakshathra_scheme_app/utils/enums.dart';
 
 class UrlHelpers {
   static EnumBuildEnvironment get server => AppConfig.server;

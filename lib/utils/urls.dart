@@ -1,4 +1,4 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/helpers/url_helpers.dart';
+import 'package:nakshathra_scheme_app/helpers/url_helpers.dart';
 
 String urlBase = UrlHelpers.baseURL;
 
@@ -13,7 +13,8 @@ String urlSchemeMySchemes = "${urlBase}api/scheme/my-schemes";
 String urlSchemeDetails = "${urlBase}api/scheme/details";
 String urlSchemeJoin = "${urlBase}api/scheme/join";
 String urlSchemeSupportFaq = "${urlBase}api/scheme/support-faq";
-String urlSchemeTransactionReceipts = "${urlBase}api/scheme/transaction-receipts";
+String urlSchemeTransactionReceipts =
+    "${urlBase}api/scheme/transaction-receipts";
 String urlSchemeResetPassword = "${urlBase}api/scheme/reset-password";
 
 //Register

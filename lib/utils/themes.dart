@@ -1,6 +1,6 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/app_palette.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/brand_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:nakshathra_scheme_app/utils/app_palette.dart';
+import 'package:nakshathra_scheme_app/utils/brand_colors.dart';
 
 // Central seed color for the app's ColorScheme (brand primary blue)
 const Color _seedColor = Color(0xFF2563EB);

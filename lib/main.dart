@@ -1,13 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/config/app_config.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/l10n/app_localizations.dart';
 
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nakshathra_scheme_app/config/app_config.dart';
+import 'package:nakshathra_scheme_app/l10n/app_localizations.dart';
 
 import 'package:provider/provider.dart';
 
