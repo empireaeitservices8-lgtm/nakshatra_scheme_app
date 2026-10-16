@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../helpers/sp_helper.dart';
 import '../../../services/web_api_services.dart';
-import '../../../utils/sp_keys.dart' as sp_keys;
 import '../../../utils/urls.dart';
 import '../model/register_model.dart';
 

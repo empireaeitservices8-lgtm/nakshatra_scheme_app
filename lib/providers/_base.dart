@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:nakshathra_scheme_app/models/app_error_model.dart';
 
-import '/utils/extensions.dart';
+import 'package:nakshathra_scheme_app/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '_mixins.dart';

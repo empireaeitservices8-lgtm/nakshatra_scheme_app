@@ -1,4 +1,4 @@
-package com.nakshthra.schemeapp
+package com.nakshathra.nakshathra_scheme_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -28,9 +28,6 @@ class RegisterRequestParams {
   final String lastName;
   final String phone;
   final String email;
-  final String password;
-  @JsonKey(name: 'confirm_password')
-  final String confirmPassword;
   final String city;
 
   RegisterRequestParams({
@@ -39,8 +36,6 @@ class RegisterRequestParams {
     required this.lastName,
     required this.phone,
     required this.email,
-    required this.password,
-    required this.confirmPassword,
     required this.city,
   });
 

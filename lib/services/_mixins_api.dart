@@ -42,6 +42,7 @@ mixin WebAPIMixin {
       case DioExceptionType.unknown:
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.connectionError:
+      case DioExceptionType.transformTimeout:
         msg = "Please check your internet connection and try again";
         if (!Navigator.of(AppConfig.navKey.currentState!.context)
             .isCurrentRoute(ConnectionFailedScreen.routeName)) {

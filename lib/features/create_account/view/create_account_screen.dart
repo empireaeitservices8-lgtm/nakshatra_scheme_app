@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/app_build_methods.dart';
 import '../../../widgets/nakshathra_logo.dart';
 import '../../home/view/home_screen.dart';
-import '../../login/view/login_screen.dart';
 import '../view_model/create_account_view_model.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -83,7 +83,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   Expanded(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 22, vertical: 10),
                       child: Column(
                         children: [
                           const SizedBox(height: 16),
@@ -165,7 +166,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.verified_user_outlined, color: Color(0xFFE5B869), size: 14),
+                Icon(Icons.verified_user_outlined,
+                    color: Color(0xFFE5B869), size: 14),
                 SizedBox(width: 6),
                 Text(
                   "100% 24K Pure Gold",
@@ -292,8 +294,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         controller: viewModel.phoneController,
                         keyboardType: TextInputType.phone,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
+                          IndianPhoneNumberFormatter(),
                         ],
                         style: const TextStyle(
                           color: Colors.white,
@@ -349,28 +350,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 onChanged: (_) => viewModel.clearError(),
               ),
 
-              const SizedBox(height: 14),
-
-              // 5. Password Field
-              _buildPasswordField(
-                controller: viewModel.passwordController,
-                hintText: "Password (min 6 chars)",
-                isVisible: viewModel.isPasswordVisible,
-                onToggleVisibility: viewModel.togglePasswordVisibility,
-                onChanged: (_) => viewModel.clearError(),
-              ),
-
-              const SizedBox(height: 14),
-
-              // 6. Confirm Password Field
-              _buildPasswordField(
-                controller: viewModel.confirmPasswordController,
-                hintText: "Confirm Password",
-                isVisible: viewModel.isConfirmPasswordVisible,
-                onToggleVisibility: viewModel.toggleConfirmPasswordVisibility,
-                onChanged: (_) => viewModel.clearError(),
-              ),
-
               const SizedBox(height: 16),
 
               // Terms & Conditions Checkbox
@@ -385,7 +364,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       onChanged: viewModel.toggleTermsAgreement,
                       activeColor: const Color(0xFFE5B869),
                       checkColor: const Color(0xFF0F1420),
-                      side: const BorderSide(color: Color(0xFF5E6E87), width: 1.2),
+                      side: const BorderSide(
+                          color: Color(0xFF5E6E87), width: 1.2),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4),
                       ),
@@ -394,7 +374,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => viewModel.toggleTermsAgreement(!viewModel.agreedToTerms),
+                      onTap: () => viewModel
+                          .toggleTermsAgreement(!viewModel.agreedToTerms),
                       child: const Text(
                         "I agree to Nakshathra Gold Terms & Conditions and Privacy Policy.",
                         style: TextStyle(
@@ -501,82 +482,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 contentPadding: EdgeInsets.zero,
               ),
               onChanged: onChanged,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPasswordField({
-    required TextEditingController controller,
-    required String hintText,
-    required bool isVisible,
-    required VoidCallback onToggleVisibility,
-    ValueChanged<String>? onChanged,
-  }) {
-    return Container(
-      height: 54,
-      decoration: BoxDecoration(
-        color: const Color(0xFF161F30),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: const Color(0xFF253347),
-          width: 1.0,
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.lock_outline_rounded,
-            color: Color(0xFF7A8B9E),
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              obscureText: !isVisible,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14.5,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'OpenSans',
-              ),
-              cursorColor: const Color(0xFFE5B869),
-              decoration: InputDecoration(
-                filled: false,
-                fillColor: Colors.transparent,
-                hintText: hintText,
-                hintStyle: const TextStyle(
-                  color: Color(0xFF556882),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'OpenSans',
-                ),
-                border: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              onChanged: onChanged,
-            ),
-          ),
-          GestureDetector(
-            onTap: onToggleVisibility,
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Icon(
-                isVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                color: const Color(0xFF7A8B9E),
-                size: 20,
-              ),
             ),
           ),
         ],

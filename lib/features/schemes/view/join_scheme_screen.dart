@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../model/join_scheme_model.dart';
 import '../view_model/join_scheme_view_model.dart';
 import 'checkout_screen.dart';
 
@@ -105,6 +104,8 @@ class _JoinSchemeScreenState extends State<JoinSchemeScreen> {
           title: "First Installment",
           subtitle: "$schemeTitle (${data?.duration ?? _selectedDuration} Months)",
           amount: amountToPay,
+          ticketNumber: data?.enrollmentId?.toString() ?? "12345",
+          enrollmentId: data?.enrollmentId,
         ),
       );
     } else {

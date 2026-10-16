@@ -7,11 +7,11 @@ class UrlHelpers {
   static String get baseURL {
     switch (server) {
       case EnumBuildEnvironment.live:
-        return 'http://100.52.86.195:8069/';
+        return 'http://52.65.213.49:8069/';
       case EnumBuildEnvironment.uat:
-        return 'http://100.52.86.195:8069/';
+        return 'http://52.65.213.49:8069/';
       case EnumBuildEnvironment.dg:
-        return 'http://100.52.86.195:8069/';
+        return 'http://52.65.213.49:8069/';
     }
   }
 

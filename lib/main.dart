@@ -1,6 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,7 +13,6 @@ import 'features/splashscreen/view/splashscreen.dart';
 import 'providers/bottom_nav_provider.dart';
 import 'providers/language_provider.dart';
 import 'providers/theme_provider.dart';
-import 'utils/interceptors.dart';
 import 'utils/localization.dart';
 import 'utils/routes.dart';
 import 'utils/themes.dart';

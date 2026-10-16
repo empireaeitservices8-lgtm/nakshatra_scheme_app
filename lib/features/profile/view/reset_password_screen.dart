@@ -1,9 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../helpers/sp_helper.dart';
 import '../../../utils/app_build_methods.dart';
-import '../model/reset_password_model.dart';
 import '../repo/profile_repository.dart';
 
 class ResetPasswordScreen extends StatefulWidget {

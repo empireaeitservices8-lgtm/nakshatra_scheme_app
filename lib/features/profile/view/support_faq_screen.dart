@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../utils/app_build_methods.dart';
 import '../../../utils/url_launcher_helper.dart';
 import '../model/support_faq_model.dart';
 import '../repo/profile_repository.dart';

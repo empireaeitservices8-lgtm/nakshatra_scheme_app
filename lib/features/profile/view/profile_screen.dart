@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../../utils/app_build_methods.dart';
 import '../../login/view/login_screen.dart';
 import '../model/transaction_receipt_model.dart';
-import '../view/reset_password_screen.dart';
 import '../view/support_faq_screen.dart';
 import '../view_model/profile_view_model.dart';
 
@@ -45,7 +44,10 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
         return RefreshIndicator(
           color: const Color(0xFFE5B869),
           onRefresh: () async {
-            await viewModel.fetchTransactionReceipts();
+            await Future.wait([
+              viewModel.fetchProfile(),
+              viewModel.fetchTransactionReceipts(),
+            ]);
           },
           child: SingleChildScrollView(
             controller: _scrollController,
@@ -131,9 +133,9 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
 
                 const SizedBox(height: 28),
 
-                // 5. Security Settings Section
+                // 5. Settings & Preferences Section
                 const Text(
-                  "Security Settings",
+                  "Settings & Preferences",
                   style: TextStyle(
                     color: Color(0xFF0D1627),
                     fontSize: 18,
@@ -144,8 +146,8 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
 
                 const SizedBox(height: 14),
 
-                // Security Settings Card
-                _buildSecuritySettingsCard(context),
+                // Settings Card
+                _buildSettingsCard(context),
 
                 const SizedBox(height: 28),
 
@@ -238,16 +240,20 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                         fontFamily: 'OpenSans',
                       ),
                     ),
-                    // const SizedBox(height: 2),
-                    // Text(
-                    //   "Member since: ${viewModel.memberSince}",
-                    //   style: const TextStyle(
-                    //     color: Color(0xFF8E9DB5),
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.w400,
-                    //     fontFamily: 'OpenSans',
-                    //   ),
-                    // ),
+                    if (viewModel.memberSince.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        viewModel.memberSince.startsWith("Member since")
+                            ? viewModel.memberSince
+                            : "Member since: ${viewModel.memberSince}",
+                        style: const TextStyle(
+                          color: Color(0xFF8E9DB5),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'OpenSans',
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -573,9 +579,9 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
   }
 
   // ==========================================
-  // 4. SECURITY SETTINGS CARD
+  // 4. SETTINGS & PREFERENCES CARD
   // ==========================================
-  Widget _buildSecuritySettingsCard(BuildContext context) {
+  Widget _buildSettingsCard(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -595,19 +601,6 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
             title: "Notification Preferences",
             onTap: () => showToast("Notification Preferences"),
             isFirst: true,
-          ),
-          const Divider(
-            height: 1,
-            thickness: 1,
-            indent: 60,
-            endIndent: 16,
-            color: Color(0xFFF1F5F9),
-          ),
-          _buildSettingTile(
-            icon: Icons.shield_outlined,
-            title: "Identity PIN & Security",
-            onTap: () =>
-                Navigator.pushNamed(context, ResetPasswordScreen.routeName),
           ),
           const Divider(
             height: 1,

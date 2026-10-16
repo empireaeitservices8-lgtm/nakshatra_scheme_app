@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../utils/app_build_methods.dart';
 import '../model/register_model.dart';
 import '../repo/register_repository.dart';
 
@@ -11,14 +12,10 @@ class CreateAccountViewModel extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
 
   // Backwards compatibility alias for full name if needed
   TextEditingController get nameController => firstNameController;
 
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
   bool _agreedToTerms = true;
   bool _isLoading = false;
   String _selectedCountryCode = '+91';
@@ -29,24 +26,12 @@ class CreateAccountViewModel extends ChangeNotifier {
       : _repository = repository ?? RegisterRepository();
 
   // Getters
-  bool get isPasswordVisible => _isPasswordVisible;
-  bool get isConfirmPasswordVisible => _isConfirmPasswordVisible;
   bool get agreedToTerms => _agreedToTerms;
   bool get isLoading => _isLoading;
   String get selectedCountryCode => _selectedCountryCode;
   String? get errorMessage => _errorMessage;
   RegisterResponseModel? get registerResponse => _registerResponse;
   RegisterUserDataModel? get registeredUser => _registerResponse?.result?.data;
-
-  void togglePasswordVisibility() {
-    _isPasswordVisible = !_isPasswordVisible;
-    notifyListeners();
-  }
-
-  void toggleConfirmPasswordVisibility() {
-    _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-    notifyListeners();
-  }
 
   void toggleTermsAgreement(bool? val) {
     _agreedToTerms = val ?? false;
@@ -71,8 +56,6 @@ class CreateAccountViewModel extends ChangeNotifier {
     final phone = phoneController.text.trim();
     final email = emailController.text.trim();
     final city = cityController.text.trim();
-    final password = passwordController.text;
-    final confirmPassword = confirmPasswordController.text;
 
     if (firstName.isEmpty) {
       _errorMessage = "Please enter your first name";
@@ -86,8 +69,8 @@ class CreateAccountViewModel extends ChangeNotifier {
       return false;
     }
 
-    if (phone.isEmpty || phone.length < 10) {
-      _errorMessage = "Please enter a valid 10-digit mobile number";
+    if (!isValidIndianPhoneNumber(phone)) {
+      _errorMessage = "Please enter a valid 10-digit Indian mobile number";
       notifyListeners();
       return false;
     }
@@ -100,18 +83,6 @@ class CreateAccountViewModel extends ChangeNotifier {
 
     if (city.isEmpty) {
       _errorMessage = "Please enter your city";
-      notifyListeners();
-      return false;
-    }
-
-    if (password.isEmpty || password.length < 6) {
-      _errorMessage = "Password must be at least 6 characters long";
-      notifyListeners();
-      return false;
-    }
-
-    if (password != confirmPassword) {
-      _errorMessage = "Passwords do not match";
       notifyListeners();
       return false;
     }
@@ -142,8 +113,6 @@ class CreateAccountViewModel extends ChangeNotifier {
       final phone = phoneController.text.trim();
       final email = emailController.text.trim();
       final city = cityController.text.trim();
-      final password = passwordController.text;
-      final confirmPassword = confirmPasswordController.text;
 
       final params = RegisterRequestParams(
         name: fullName,
@@ -151,8 +120,6 @@ class CreateAccountViewModel extends ChangeNotifier {
         lastName: lastName,
         phone: phone,
         email: email,
-        password: password,
-        confirmPassword: confirmPassword,
         city: city,
       );
 
@@ -197,8 +164,6 @@ class CreateAccountViewModel extends ChangeNotifier {
     phoneController.dispose();
     emailController.dispose();
     cityController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
     super.dispose();
   }
 }

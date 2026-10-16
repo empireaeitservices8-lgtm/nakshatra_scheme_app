@@ -6,6 +6,7 @@ import '../../../helpers/sp_helper.dart';
 import '../../../services/web_api_services.dart';
 import '../../../utils/urls.dart';
 import '../model/logout_model.dart';
+import '../model/profile_model.dart';
 import '../model/reset_password_model.dart';
 import '../model/support_faq_model.dart';
 import '../model/transaction_receipt_model.dart';
@@ -14,6 +15,80 @@ class ProfileRepository {
   final Dio _dio;
 
   ProfileRepository({Dio? dio}) : _dio = dio ?? WebAPIService().dio;
+
+  /// Fetches User Profile data from api/scheme/profile
+  Future<ProfileResponseModel> getProfile({int? userId}) async {
+    final effectiveUserId = userId ?? await SpHelper.getUserId() ?? 1;
+    final requestBody = ProfileRequestModel(
+      params: ProfileRequestParams(userId: effectiveUserId),
+    ).toJson();
+
+    debugPrint("===> [ProfileRepository] Request to $urlSchemeProfile: ${jsonEncode(requestBody)}");
+
+    try {
+      final sessionId = await SpHelper.getSessionId();
+      final headers = <String, dynamic>{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        if (sessionId != null && sessionId.isNotEmpty) 'Cookie': 'session_id=$sessionId',
+      };
+
+      final response = await _dio.post(
+        urlSchemeProfile,
+        data: requestBody,
+        options: Options(headers: headers),
+      );
+
+      debugPrint("<=== [ProfileRepository] Profile status: ${response.statusCode}");
+      debugPrint("<=== [ProfileRepository] Profile data: ${response.data}");
+
+      Map<String, dynamic> responseMap;
+      if (response.data is Map<String, dynamic>) {
+        responseMap = response.data;
+      } else if (response.data is Map) {
+        responseMap = Map<String, dynamic>.from(response.data);
+      } else if (response.data is String) {
+        responseMap = jsonDecode(response.data) as Map<String, dynamic>;
+      } else {
+        throw Exception("Invalid response format received from server");
+      }
+
+      return ProfileResponseModel.fromJson(responseMap);
+    } on DioException catch (dioError) {
+      debugPrint("❌ [ProfileRepository] Profile DioException: ${dioError.message}");
+
+      if (dioError.response?.data != null && dioError.response?.data is Map) {
+        try {
+          final errorMap = Map<String, dynamic>.from(dioError.response!.data);
+          return ProfileResponseModel.fromJson(errorMap);
+        } catch (_) {}
+      }
+
+      String userMessage = "Network error: unable to connect to server.";
+      if (dioError.type == DioExceptionType.connectionTimeout ||
+          dioError.type == DioExceptionType.receiveTimeout ||
+          dioError.type == DioExceptionType.sendTimeout) {
+        userMessage = "Connection timed out. Please check your internet connection.";
+      } else if (dioError.type == DioExceptionType.connectionError) {
+        userMessage = "Unable to connect to server.";
+      }
+
+      return ProfileResponseModel(
+        error: ProfileErrorModel(
+          code: dioError.response?.statusCode ?? 500,
+          message: userMessage,
+        ),
+      );
+    } catch (e) {
+      debugPrint("❌ [ProfileRepository] Unexpected error in getProfile: $e");
+      return ProfileResponseModel(
+        error: ProfileErrorModel(
+          code: 500,
+          message: e.toString(),
+        ),
+      );
+    }
+  }
 
   /// Fetches Support and FAQ data from api/scheme/support-faq
   Future<SupportFaqResponseModel> getSupportFaq({int? userId}) async {

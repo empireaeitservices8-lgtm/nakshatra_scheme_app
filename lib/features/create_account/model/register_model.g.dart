@@ -29,8 +29,6 @@ RegisterRequestParams _$RegisterRequestParamsFromJson(
       lastName: json['last_name'] as String,
       phone: json['phone'] as String,
       email: json['email'] as String,
-      password: json['password'] as String,
-      confirmPassword: json['confirm_password'] as String,
       city: json['city'] as String,
     );
 
@@ -42,8 +40,6 @@ Map<String, dynamic> _$RegisterRequestParamsToJson(
       'last_name': instance.lastName,
       'phone': instance.phone,
       'email': instance.email,
-      'password': instance.password,
-      'confirm_password': instance.confirmPassword,
       'city': instance.city,
     };
 
