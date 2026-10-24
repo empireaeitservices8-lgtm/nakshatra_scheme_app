@@ -1,6 +1,28 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/helpers/url_helpers.dart';
+import 'package:nakshathra_scheme_app/helpers/url_helpers.dart';
 
 String urlBase = UrlHelpers.baseURL;
+
+// Scheme Auth
+String urlSchemeLogin = "${urlBase}api/scheme/login";
+String urlSchemeSendOtp = "${urlBase}api/scheme/otp/send";
+String urlSchemeResendOtp = "${urlBase}api/scheme/otp/resend";
+String urlSchemeVerifyOtp = "${urlBase}api/scheme/verify-otp";
+String urlSchemeRegister = "${urlBase}api/scheme/register";
+String urlSchemeLogout = "${urlBase}api/scheme/logout";
+String urlSchemeLiveGoldPrice = "${urlBase}api/scheme/live-gold-price";
+String urlSchemePopularPlans = "${urlBase}api/scheme/popular-plans";
+String urlSchemeGoldAccount = "${urlBase}api/scheme/gold-account";
+String urlSchemeMySchemes = "${urlBase}api/scheme/my-schemes";
+String urlSchemeDetails = "${urlBase}api/scheme/details";
+String urlSchemeJoin = "${urlBase}api/scheme/join";
+String urlSchemeSupportFaq = "${urlBase}api/scheme/support-faq";
+String urlSchemeProfile = "${urlBase}api/scheme/profile";
+String urlSchemeTransactionReceipts =
+    "${urlBase}api/scheme/transaction-receipts";
+String urlSchemeResetPassword = "${urlBase}api/scheme/reset-password";
+String urlSchemeRazorpayConfig = "${urlBase}api/scheme/razorpay/config";
+String urlSchemeRazorpayCreateOrder = "${urlBase}api/scheme/razorpay/create-order";
+String urlSchemeRazorpayVerifyPayment = "${urlBase}api/scheme/razorpay/verify-payment";
 
 //Register
 String urlRegistrationRequestOTP = "${urlBase}register/request-otp";

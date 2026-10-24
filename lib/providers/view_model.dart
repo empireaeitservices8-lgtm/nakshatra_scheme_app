@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '/providers/_base.dart';
-import '/providers/_mixins.dart';
+import '_base.dart';
+import '_mixins.dart';
 
 abstract class ViewModel extends BaseProvider
     with MixinProgressProvider, MixinAPIProvider {

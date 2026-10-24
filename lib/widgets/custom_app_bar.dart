@@ -1,5 +1,5 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/config/app_config.dart';
 import 'package:flutter/services.dart';
+import 'package:nakshathra_scheme_app/config/app_config.dart';
 
 import '/providers/language_provider.dart';
 import '/utils/colors.dart';

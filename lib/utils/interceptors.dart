@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/app_build_methods.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:nakshathra_scheme_app/utils/app_build_methods.dart';
 
 class LoggerStackTrace {
   const LoggerStackTrace._({
@@ -212,7 +211,7 @@ class _AppStackInterceptorBuilderState
                               child: SafeArea(
                                 left: false,
                                 child: Container(
-                                  color: Colors.black.withValues(alpha: 0.8) ,
+                                  color: Colors.black.withValues(alpha: 0.8),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,

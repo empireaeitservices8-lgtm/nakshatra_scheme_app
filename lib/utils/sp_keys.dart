@@ -8,4 +8,7 @@ const keyEmail = "KEY_EMAIL";
 const keyUserId = "KEY_USER_ID";
 const keyRoleId = "KEY_ROLE_ID";
 const keyRole = "KEY_ROLE";
+const keyPartnerId = "KEY_PARTNER_ID";
+const keyCity = "KEY_CITY";
+const keyIsLoggedIn = "KEY_IS_LOGGED_IN";
 const keyLocalAuthStatus = "local_auth_status";

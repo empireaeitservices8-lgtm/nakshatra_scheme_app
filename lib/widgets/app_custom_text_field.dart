@@ -1,7 +1,7 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/colors.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nakshathra_scheme_app/utils/colors.dart';
+import 'package:nakshathra_scheme_app/utils/styles.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
@@ -87,12 +87,14 @@ class CustomTextField extends StatelessWidget {
               RichText(
                 text: TextSpan(
                     text: label,
-                    style: labelStyle ?? tsS12W400.copyWith(color: AppColors().colorBlack),
+                    style: labelStyle ??
+                        tsS12W400.copyWith(color: AppColors().colorBlack),
                     children: [
                       if (isMandatory)
                         TextSpan(
                             text: " *",
-                            style: tsS12W400.copyWith(color: AppColors().colorDE202B))
+                            style: tsS12W400.copyWith(
+                                color: AppColors().colorDE202B))
                     ]),
               ),
             // if (label != null) SizedBox(height: 4),
@@ -123,7 +125,8 @@ class CustomTextField extends StatelessWidget {
                   maxLines: numberOfLines ?? 1,
                   minLines: minLines,
                   obscureText: password ?? false,
-                  style: textStyle ?? tsS16W500.copyWith(color: AppColors().colorBlack),
+                  style: textStyle ??
+                      tsS16W500.copyWith(color: AppColors().colorBlack),
                   decoration: InputDecoration(
                       contentPadding: prefixWidget == null
                           ? contentPadding ??
@@ -155,10 +158,12 @@ class CustomTextField extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors().colorBCBCBC),
+                          borderSide:
+                              BorderSide(color: AppColors().colorBCBCBC),
                           borderRadius: BorderRadius.circular(8)),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors().colorBCBCBC),
+                          borderSide:
+                              BorderSide(color: AppColors().colorBCBCBC),
                           borderRadius: BorderRadius.circular(8)),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors().colorBCBCBC),
@@ -173,8 +178,8 @@ class CustomTextField extends StatelessWidget {
                           : null,
                       // label: Text(label),
                       hintText: hint ?? '',
-                      hintStyle:
-                          hintStyle ?? tsS15W500.copyWith(color: AppColors().colorBDBDBD)),
+                      hintStyle: hintStyle ??
+                          tsS15W500.copyWith(color: AppColors().colorBDBDBD)),
                 ),
               ),
             ),

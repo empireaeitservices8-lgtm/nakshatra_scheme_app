@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'package:PROJECT_NAME_PLACEHOLDER/models/app_error_model.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/providers/_mixins.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/extensions.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nakshathra_scheme_app/models/app_error_model.dart';
+import 'package:nakshathra_scheme_app/providers/_mixins.dart';
+import 'package:nakshathra_scheme_app/utils/extensions.dart';
 import '_mixins_api.dart';
+
+import '../utils/api_logger.dart';
 
 class WebAPIService with WebAPIMixin, MixinAPIProvider {
   WebAPIService._initialise()
@@ -14,15 +16,7 @@ class WebAPIService with WebAPIMixin, MixinAPIProvider {
             headers: {
               "accept": "application/json",
             })) {
-    if (kDebugMode) {
-      dio.interceptors.add(LogInterceptor(
-        responseHeader: false,
-        responseBody: true,
-        requestBody: true,
-        requestHeader: true,
-      ));
-      // ..interceptors.add(AppStackInterceptorBuilder.appStackInterceptor);
-    }
+    dio.interceptors.add(ApiLoggingInterceptor());
   }
 
   factory WebAPIService() => WebAPIService._initialise();

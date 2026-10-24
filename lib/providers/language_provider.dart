@@ -1,14 +1,11 @@
 import 'dart:async';
 
-
-
-import 'package:PROJECT_NAME_PLACEHOLDER/l10n/app_localizations.dart';
-
-import '/helpers/sp_helper.dart';
-import '/utils/extensions.dart';
-import '/utils/sp_keys.dart';
-
 import 'package:flutter/material.dart';
+import 'package:nakshathra_scheme_app/l10n/app_localizations.dart';
+import 'package:nakshathra_scheme_app/utils/extensions.dart';
+import 'package:nakshathra_scheme_app/utils/sp_keys.dart';
+
+import '../helpers/sp_helper.dart';
 
 class LanguageProvider extends ChangeNotifier {
   static final LanguageProvider _instance = LanguageProvider._initialise();

@@ -1,39 +1,40 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/config/app_config.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/enums.dart';
+import 'package:nakshathra_scheme_app/config/app_config.dart';
+import 'package:nakshathra_scheme_app/utils/enums.dart';
 
 class UrlHelpers {
   static EnumBuildEnvironment get server => AppConfig.server;
 
   static String get baseURL {
     switch (server) {
+      // 52.65.213.49
       case EnumBuildEnvironment.live:
-        return '/// add url for live';
+        return 'http://16.4.132.244:8069/';
       case EnumBuildEnvironment.uat:
-        return '/// add url for uat';
+        return 'http://16.4.132.244:8069/';
       case EnumBuildEnvironment.dg:
-        return '/// add url for dg';
-      }
+        return 'http://16.4.132.244:8069/';
+    }
   }
 
   static String get key {
     switch (server) {
       case EnumBuildEnvironment.live:
-        return '/// add key for live';
+        return '';
       case EnumBuildEnvironment.uat:
-        return '/// add key for uat';
+        return '';
       case EnumBuildEnvironment.dg:
-        return '/// add key for dg';
-      }
+        return '';
+    }
   }
 
   static String get baseUrlApi {
     switch (server) {
       case EnumBuildEnvironment.live:
-        return '/// add apiHead for live';
+        return 'http://100.52.86.195:8069/api/';
       case EnumBuildEnvironment.uat:
-        return '/// add apiHead for uat';
+        return 'http://100.52.86.195:8069/api/';
       case EnumBuildEnvironment.dg:
-        return '/// add apiHead for dg';
-      }
+        return 'http://100.52.86.195:8069/api/';
+    }
   }
 }

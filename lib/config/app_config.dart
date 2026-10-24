@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/enums.dart';
+
+import '../features/main/view/main_screen.dart';
+import '../utils/enums.dart';
 
 class AppConfig {
-  static const appName = "APP_NAME_PLACEHOLDER";
-  static const bundleId = "BUNDLE_ID_PLACEHOLDER";
-  static const designWidth = WIDTH_PLACEHOLDER;
-  static const designHeight = HEIGHT_PLACEHOLDER;
+  static const appName = "Nakshatra Scheme";
+  static const bundleId = "nakshthra.schemeapp";
+  static const designWidth = 393;
+  static const designHeight = 852;
+  static const appLogo = "assets/images/app_logo.png";
 
   static final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
-  GlobalKey bottomNavigationKey = GlobalKey();
+  static final GlobalKey<MainScreenState> bottomNavigationKey =
+      GlobalKey<MainScreenState>();
   static bool isDebugMode = true;
 
   static EnumBuildEnvironment server = EnumBuildEnvironment.dg;

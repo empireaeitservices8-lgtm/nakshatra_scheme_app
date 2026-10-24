@@ -1,25 +1,24 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/config/app_config.dart';
-import 'package:PROJECT_NAME_PLACEHOLDER/l10n/app_localizations.dart';
 
-import 'package:PROJECT_NAME_PLACEHOLDER/utils/extensions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nakshathra_scheme_app/config/app_config.dart';
+import 'package:nakshathra_scheme_app/l10n/app_localizations.dart';
 
 import 'package:provider/provider.dart';
 
 import 'features/splashscreen/view/splashscreen.dart';
+import 'providers/bottom_nav_provider.dart';
 import 'providers/language_provider.dart';
 import 'providers/theme_provider.dart';
-import 'utils/interceptors.dart';
 import 'utils/localization.dart';
 import 'utils/routes.dart';
 import 'utils/themes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -38,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => LanguageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BottomNavProvider(),
         ),
       ],
       builder: (context, child) => ScreenUtilInit(
@@ -82,11 +84,6 @@ class MyApp extends StatelessWidget {
               builder: (context, child) {
                 LanguageProvider.initContext(context);
                 Localization.init(context);
-
-                if (kDebugMode) {
-                  StackTrace.current.toString().log('', true);
-                  child = AppStackInterceptorBuilder(child: child!);
-                }
                 return child!;
               },
             );

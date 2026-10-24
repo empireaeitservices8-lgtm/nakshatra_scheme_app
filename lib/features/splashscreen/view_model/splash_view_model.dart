@@ -1,8 +1,7 @@
-import 'package:PROJECT_NAME_PLACEHOLDER/providers/view_model.dart';
+import 'package:nakshathra_scheme_app/providers/view_model.dart';
 
-class SplashViewModel extends ViewModel{
-
-   bool? _checkBoxVal;
+class SplashViewModel extends ViewModel {
+  bool? _checkBoxVal;
 
   bool? get checkBoxVal => _checkBoxVal;
 
@@ -10,7 +9,8 @@ class SplashViewModel extends ViewModel{
     _checkBoxVal = val;
     notifyListeners();
   }
-     bool? _checkRadioButtonVal;
+
+  bool? _checkRadioButtonVal;
 
   bool? get checkRadioButtonVal => _checkRadioButtonVal;
 
