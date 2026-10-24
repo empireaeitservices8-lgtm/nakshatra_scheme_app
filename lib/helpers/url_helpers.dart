@@ -6,12 +6,13 @@ class UrlHelpers {
 
   static String get baseURL {
     switch (server) {
+      // 52.65.213.49
       case EnumBuildEnvironment.live:
-        return 'http://52.65.213.49:8069/';
+        return 'http://16.4.132.244:8069/';
       case EnumBuildEnvironment.uat:
-        return 'http://52.65.213.49:8069/';
+        return 'http://16.4.132.244:8069/';
       case EnumBuildEnvironment.dg:
-        return 'http://52.65.213.49:8069/';
+        return 'http://16.4.132.244:8069/';
     }
   }
 

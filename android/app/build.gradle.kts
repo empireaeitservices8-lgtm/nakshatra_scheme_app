@@ -15,7 +15,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nakshathra.schemeapp"
+    namespace = "com.nakshathra.scheme"
     compileSdk = 36
     ndkVersion = "28.2.13676358"
 
@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.nakshathra.schemeapp"
+        applicationId = "com.nakshathra.scheme"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
